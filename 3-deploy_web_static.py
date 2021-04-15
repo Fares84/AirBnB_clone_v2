@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-"""[Fabric script]
-"""
+"""Fabric script that generates a compressed file (.tgz) from the contents
+    of the web_static folder of your AirBnB Clone repo """
 from fabric.api import env
 from fabric.api import put
 from fabric.api import run
@@ -43,7 +43,8 @@ def do_deploy(archive_path):
         run("sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/".
             format(file_name, file_name))
         run("sudo rm /tmp/{}.tgz".format(file_name))
-        run("sudo mv {} /data/web_static/releases/{}/".format(_path, file_name))
+        run("sudo mv {} /data/web_static/releases/{}/".format(_path,
+                                                              file_name))
         run("sudo rm -rf /data/web_static/releases/{}/web_static".
             format(file_name))
         run("sudo rm -rf /data/web_static/current")
