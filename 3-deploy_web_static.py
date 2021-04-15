@@ -13,40 +13,42 @@ env.user = "ubuntu"
 
 
 def do_pack():
-    """[generates a .tgz archive]
-    """
-    time_format = '%Y%m%d%H%M%S'
-    time = datetime.utcnow().strftime(time_format)
-    filepath = "versions/web_static_{}.tgz".format(time)
+    """ generate a compressed archive
+    the function do_pack must return the archive path
+    if the archive has been correctly generated
+    otherwise, it should return None"""
+    time_stamp = '%Y%m%d%H%M%S'
+    _time = datetime.utcnow().strftime(time_stamp)
+    _path = "versions/web_static_{}.tgz".format(_time)
     local("mkdir -p versions")
-    local("tar -cvzf {} web_static".format(filepath))
-    if path.exists(filepath):
-        return filepath
+    local("tar -cvzf {} web_static".format(_path))
+    if path.exists(_path):
+        return _path
     else:
         return None
 
 
 def do_deploy(archive_path):
-    """[distributes an archive to your web servers]
+    """ distributes an archive to web server
     Args:
-        archive_path ([path]): [path of the archive file]
+        archive_path (path): path of the archive file
     """
     if not path.exists(archive_path) and path.isfile(archive_path):
         return False
-    filename = archive_path.split("/")[-1].split(".")[0]
-    path1 = "/data/web_static/releases/{}/web_static/*".format(filename)
+    file_name = archive_path.split("/")[-1].split(".")[0]
+    _path = "/data/web_static/releases/{}/web_static/*".format(file_name)
     try:
         put(archive_path, "/tmp/")
-        run("sudo mkdir -p /data/web_static/releases/{}/".format(filename))
+        run("sudo mkdir -p /data/web_static/releases/{}/".format(file_name))
         run("sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/".
-            format(filename, filename))
-        run("sudo rm /tmp/{}.tgz".format(filename))
-        run("sudo mv {} /data/web_static/releases/{}/".format(path1, filename))
+            format(file_name, file_name))
+        run("sudo rm /tmp/{}.tgz".format(file_name))
+        run("sudo mv {} /data/web_static/releases/{}/".format(_path, file_name))
         run("sudo rm -rf /data/web_static/releases/{}/web_static".
-            format(filename))
+            format(file_name))
         run("sudo rm -rf /data/web_static/current")
         run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
-            .format(filename))
+            .format(file_name))
         return True
     except:
         return False
@@ -54,7 +56,7 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """[full deploy]
+    """ full deploy 
     """
     filepath = do_pack()
     if filepath is None:
