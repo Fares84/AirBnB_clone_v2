@@ -12,21 +12,6 @@ from os import path
 env.hosts = ['34.73.62.68', '34.75.147.36']
 env.user = "ubuntu"
 
-def do_pack():
-    """ generate a compressed archive
-    the function do_pack must return the archive path
-    if the archive has been correctly generated
-    otherwise, it should return None"""
-    time_stamp = '%Y%m%d%H%M%S'
-    _time = datetime.utcnow().strftime(time_stamp)
-    _path = "versions/web_static_{}.tgz".format(_time)
-    local("mkdir -p versions")
-    local("tar -cvzf {} web_static".format(_path))
-    if path.exists(_path):
-        return _path
-    else:
-        return None
-
 def do_deploy(archive_path):
     """ distributes an archive to web server
     Args:
