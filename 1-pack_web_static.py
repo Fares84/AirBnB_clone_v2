@@ -13,9 +13,9 @@ def do_pack():
     otherwise, it should return None"""
     time_stamp = '%Y%m%d%H%M%S'
     _time = datetime.utcnow().strftime(time_stamp)
-    _path = "versions.web_static_{}.tgz".format(_time)
+    _path = "versions/web_static_{}.tgz".format(_time)
     local("mkdir -p versions")
-    local("tar -cvzf {} web_static".format(_path)
+    local("tar -cvzf {} web_static".format(_path))
     if path.exists(_path):
         return _path
     else:
