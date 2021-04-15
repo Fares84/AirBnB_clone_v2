@@ -38,15 +38,15 @@ def do_deploy(archive_path):
     if not path.exists(archive_path) and path.isfile(archive_path):
         return False
     file_name = archive_path.split("/")[-1].split(".")[0]
-    folder_to_compress = "/data/web_static/releases/{}/web_static/*".format(file_name)
+    folderpath = "/data/web_static/releases/{}/web_static/*".format(file_name)
     try:
         put(archive_path, "/tmp/")
         run("sudo mkdir -p /data/web_static/releases/{}/".format(file_name))
         run("sudo tar -xzf /tmp/{}.tgz -C /data/web_static/releases/{}/".
             format(file_name, file_name))
         run("sudo rm /tmp/{}.tgz".format(file_name))
-        run("sudo mv {} /data/web_static/releases/{}/".format(folder_to_compress,
-                                                              file_name))
+        run("sudo mv {} /data/web_static/releases/{}/".format
+            (folderpath, file_name))
         run("sudo rm -rf /data/web_static/releases/{}/web_static".
             format(file_name))
         run("sudo rm -rf /data/web_static/current")
