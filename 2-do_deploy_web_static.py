@@ -12,12 +12,12 @@ from os import path
 env.hosts = ['34.73.62.68', '34.75.147.36']
 env.user = "ubuntu"
 
-
 def do_pack():
     """ generate a compressed archive
-    the function do_pack must return the archive
-    path if the archive has been correctly generated"""
-    time_stamp = strftime("%Y%m%d%H%M%S")
+    the function do_pack must return the archive path
+    if the archive has been correctly generated
+    otherwise, it should return None"""
+    time_stamp = '%Y%m%d%H%M%S'
     _time = datetime.utcnow().strftime(time_stamp)
     _path = "versions/web_static_{}.tgz".format(_time)
     local("mkdir -p versions")
@@ -38,7 +38,7 @@ def do_deploy(archive_path):
     file_name = archive_path.split("/")[-1].split(".")[0]
     # set var for path to unompr and set only the compressed file
     # without the exetension, divided by "." and first[0] position
-    folder_to_compress = "/data/web_static.releases/{}/web_static/*".format(file_name)
+    folder_to_compress = "/data/web_static/releases/{}/web_static/*".format(file_name)
     try:
         # uploading the archive_path to tmp on the server
         put(archive_path, "/tmp/")
@@ -54,6 +54,7 @@ def do_deploy(archive_path):
         run("sudo rm -rf /data/web_static/releases/{}/web_static".
             format(file_name))
         # create a new symbolic link ln -s /usr/local/var /var/run
+        run("sudo rm -rf /data/web_static/current")
         run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(file_name))
         # on the server, create a linked with the current
