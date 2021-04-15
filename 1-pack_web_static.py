@@ -11,7 +11,7 @@ def do_pack():
     the function do_pack must return the archive path
     if the archive has been correctly generated
     otherwise, it should return None"""
-    time_stamp = strftime("%Y%m%d%H%M%S")
+    time_stamp = '%Y%m%d%H%M%S'
     _time = datetime.utcnow().strftime(time_stamp)
     _path = "versions.web_static_{}.tgz".format(_time)
     local("mkdir -p versions")
