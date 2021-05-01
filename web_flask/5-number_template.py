@@ -54,6 +54,7 @@ def PythonIsCool(text):
     text = text.replace("_", " ")
     return 'Python {}'.format(text)
 
+
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
     """ number route
@@ -66,6 +67,7 @@ def number(n):
     """
     if isinstance(n, int):
         return '{} is a number'.format(n)
+
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def NumberTemplate(n):
